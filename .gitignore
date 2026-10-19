@@ -1,0 +1,30 @@
+# Dados brutos (~1 GB) e resultados (~3 GB, com pesos de modelo)
+images/
+imagens/
+resultados/
+
+# Artefatos gerados
+*.pt
+*.pth
+*.joblib
+duplicates.csv
+manifest*.csv
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Metadados do estudo: fora do repositorio ate decisao explicita de publica-los.
+# Remova esta linha para versiona-los.
+metadata.csv

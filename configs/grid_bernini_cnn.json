@@ -1,0 +1,41 @@
+{
+  "base": {
+    "model_name": "bernini_cnn",
+    "input_size": [
+      224,
+      224
+    ],
+    "widths": [
+      2,
+      4,
+      8,
+      16
+    ],
+    "hidden_dim": 128,
+    "epochs": 200,
+    "patience": 45,
+    "lr_patience": 15,
+    "batch_size": 32,
+    "learning_rate": 0.001,
+    "elastic_net": true,
+    "l1": 1e-05,
+    "l2": 0.0001,
+    "use_class_weights": true,
+    "class_weight_scheme": "max_over_n",
+    "augment": true,
+    "hflip": false,
+    "num_workers": 4,
+    "selection_metric": "f1_macro",
+    "dropout": 0.0
+  },
+  "grid": {
+    "augment": [
+      false,
+      true
+    ]
+  },
+  "selection": {
+    "metric": "val_f1_macro"
+  },
+  "_nota_grid": "Grid reduzido pela analise de sensibilidade dos grid_summary da 1a execucao: nenhum hiperparametro moveu val_f1 mais que o ruido entre folds (0.081). augment foi o unico com sinal (off ganha no bernini); lr/batch/dropout fixados no melhor centro. 16 -> 2 candidatos."
+}

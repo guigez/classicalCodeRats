@@ -1,0 +1,18 @@
+# Dependencias do pipeline. As faixas abaixo sao as minimas compativeis com o
+# codigo; para reprodutibilidade exata, congele as versoes do servidor onde os
+# resultados foram gerados:
+#     pip freeze > requirements-lock.txt
+# Cada treino tambem grava as versoes usadas em config_used.json (chave "_env").
+torch>=2.0
+torchvision>=0.15
+numpy>=1.23
+pandas>=1.5
+scikit-learn>=1.2
+scipy>=1.9
+matplotlib>=3.6
+shap>=0.42
+joblib>=1.2
+pillow>=9.0
+
+# testes
+pytest>=7.0

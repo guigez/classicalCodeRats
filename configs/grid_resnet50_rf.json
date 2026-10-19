@@ -1,0 +1,37 @@
+{
+  "base": {
+    "model_name": "resnet50_rf",
+    "input_size": [
+      224,
+      224
+    ],
+    "pretrained": true,
+    "train_layer4": true,
+    "epochs": 200,
+    "patience": 15,
+    "lr_patience": 6,
+    "batch_size": 32,
+    "learning_rate": 0.0001,
+    "weight_decay": 0.0001,
+    "use_class_weights": true,
+    "class_weight_scheme": "balanced",
+    "augment": true,
+    "hflip": false,
+    "num_workers": 4,
+    "selection_metric": "f1_macro",
+    "rf_n_estimators": 100,
+    "rf_class_weight": "balanced",
+    "rf_min_samples_leaf": 5
+  },
+  "grid": {
+    "augment": [
+      false,
+      true
+    ]
+  },
+  "selection": {
+    "metric": "val_f1_macro"
+  },
+  "rf_grid": {},
+  "_nota_grid": "Grid reduzido pela analise de sensibilidade: rf_n_estimators teve amplitude 0.0005 (nulo); rf_min_samples_leaf e lr/batch dentro do ruido (0.074). augment unico com sinal (ON ganha na resnet). 32 candidatos avaliados -> 2."
+}
