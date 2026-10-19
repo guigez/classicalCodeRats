@@ -178,11 +178,11 @@ def main() -> int:
 
     py = sys.executable
     # Cada cenario de agrupamento vai para uma subpasta propria, senao os
-    # quatro sobrescreveriam os mesmos folds e resultados. A menos que o
-    # usuario tenha dado um --results_dir explicito diferente do padrao, os
-    # resultados de cada tarefa ficam em resultados/<task>/.
-    base_res = Path(args.results_dir)
-    res = base_res / args.task if args.results_dir == "resultados" else base_res
+    # quatro sobrescreveriam os mesmos folds e resultados: os resultados de
+    # cada tarefa ficam sempre em <results_dir>/<task>/. Antes isso so valia
+    # para o --results_dir padrao, e um diretorio explicito misturava as
+    # quatro tarefas na mesma pasta.
+    res = Path(args.results_dir) / args.task
     splits = res / "splits"
     manifest = res / f"manifest_{args.task}.csv"
     familias = args.only_families or list(FAMILIES)

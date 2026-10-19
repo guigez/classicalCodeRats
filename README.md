@@ -43,9 +43,22 @@ python run_all.py --task binary --split_mode fixed_paired \
     --fixed_test_subjects 1 9 10 11 --images_dir imagens --seeds 1 2 3 4 5
 ```
 
+No servidor, com a estrutura `Bernini/_dataset/{images,metadata-1.csv}`,
+`Bernini/Classical/classicalCodeRats/` (este repositório) e saída em
+`Bernini/Classical/main_results/`, os quatro cenários rodam em sequência sem
+sessão aberta:
+
+```bash
+nohup bash scripts/run_server.sh > /dev/null 2>&1 &
+tail -f ../main_results/run_server.log
+```
+
+As opções (cenários, sementes, dispositivo, caminhos) estão no cabeçalho de
+`scripts/run_server.sh`.
+
 Cada etapa grava um `params.json`; rodar de novo só refaz o que mudou
-(`--force` refaz tudo). Resultados em `resultados/<task>/`, tabelas finais em
-`resultados/<task>/_tabelas/`:
+(`--force` refaz tudo). Resultados em `<results_dir>/<task>/` (padrão `resultados/`), tabelas finais em
+`<results_dir>/<task>/_tabelas/`:
 
 | arquivo | conteúdo |
 |---|---|
