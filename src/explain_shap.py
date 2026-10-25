@@ -334,6 +334,18 @@ def main() -> int:
     shap_vals = explain_pixels(model, bg, X, device, n_classes)
 
     bg_removido = not args.with_background
+    # Salvaguarda: se o fundo NAO foi removido e o flag faltou, a mascara de
+    # "regiao nao vazia" cobre a imagem inteira, o fundo fica com area zero e
+    # o enriquecimento sai NaN. Foi o que aconteceu na execucao de 2026-10-19
+    # (imagens com esteira, sem --with_background). Detecta e cai para Otsu.
+    if bg_removido:
+        cobertura = float(np.mean([animal_mask(to_display(x, imagenet_norm), True).mean()
+                                   for x in X]))
+        if cobertura > 0.9:
+            print(f"[aviso] a mascara de fundo removido cobre {cobertura:.0%} da imagem: "
+                  f"as imagens ainda tem a esteira. Usando a mascara por limiar "
+                  f"(--with_background).")
+            bg_removido = False
     painel(exemplos, X, shap_vals, class_names,
            out_dir / "shap_panel.png", imagenet_norm, bg_removido)
 

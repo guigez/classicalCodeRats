@@ -22,6 +22,8 @@
 #   DEVICE      auto | cuda | cpu              (padrao: auto)
 #   DATASET     pasta dos dados                (padrao: Bernini/_dataset)
 #   RESULTS     pasta de saida                 (padrao: Bernini/Classical/main_results)
+#   WITH_BACKGROUND  1 = imagens ainda tem a esteira (padrao: 1; afeta so a
+#               mascara do SHAP). Use 0 se trocar para imagens sem fundo.
 #   EXTRA_ARGS  argumentos a mais para run_all.py (ex.: "--force")
 
 set -uo pipefail
@@ -37,6 +39,7 @@ TASKS="${TASKS:-binary three_bernini three_mlss multiclass}"
 SEEDS="${SEEDS-1 2 3 4 5}"
 FIXED_TEST="${FIXED_TEST:-1 9 10 11}"
 DEVICE="${DEVICE:-auto}"
+WITH_BACKGROUND="${WITH_BACKGROUND:-1}"
 EXTRA_ARGS="${EXTRA_ARGS:-}"
 
 mkdir -p "$RESULTS"
@@ -49,7 +52,7 @@ echo "inicio  $(date '+%F %T')   commit $(git -C "$REPO" rev-parse --short HEAD 
 echo "dados   $DATASET"
 echo "saida   $RESULTS"
 echo "python  $(command -v "$PYTHON")"
-echo "tarefas $TASKS   sementes: ${SEEDS:-nenhuma}   teste: $FIXED_TEST   device: $DEVICE"
+echo "tarefas $TASKS   sementes: ${SEEDS:-nenhuma}   teste: $FIXED_TEST   device: $DEVICE   com esteira: $WITH_BACKGROUND"
 echo "======================================================================"
 
 if [ ! -d "$DATASET/images" ]; then echo "ERRO: $DATASET/images nao existe"; exit 1; fi
@@ -62,6 +65,8 @@ fi
 cd "$REPO" || exit 1
 seeds_arg=()
 if [ -n "$SEEDS" ]; then seeds_arg=(--seeds $SEEDS); fi
+bg_arg=()
+if [ "$WITH_BACKGROUND" = "1" ]; then bg_arg=(--with-background); fi
 
 falhas=()
 for task in $TASKS; do
@@ -72,7 +77,7 @@ for task in $TASKS; do
             --split_mode fixed_paired --fixed_test_subjects $FIXED_TEST \
             --images_dir "$DATASET/images" --metadata "$DATASET/metadata-1.csv" \
             --results_dir "$RESULTS" --device "$DEVICE" \
-            "${seeds_arg[@]}" $EXTRA_ARGS; then
+            "${seeds_arg[@]}" "${bg_arg[@]}" $EXTRA_ARGS; then
         falhas+=("$task")
     fi
 done
